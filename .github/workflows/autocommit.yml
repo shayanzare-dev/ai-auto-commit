@@ -1,58 +1,99 @@
-name: 🚀 Auto Commit Pro
+name: Auto commit
 
 on:
+
   push:
     branches:
       - master
       
   schedule:
-    - cron: "*/30 * * * *"
+  - cron: "0 */4 * * *" # See https://crontab.guru/#0_7,9,11_*_*_1,3
 
 jobs:
   auto_commit:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: 🔍 Debug Ref
+      - name: DEBUG 
         run: echo "::debug::Ref = ${{github.ref}}"
-
       - uses: actions/checkout@v3      
         with:
-          persist-credentials: false
-          fetch-depth: 0
+         persist-credentials: false
+         fetch-depth: 0
 
-      - name: 🕒 Update Timestamp
+      - name: Modify last update
         run: |
-          d=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
-          echo "Last update: $d 🚀" > LAST_UPDATED
+          d=`date '+%Y-%m-%dT%H:%M:%SZ'`
+          echo $d > LAST_UPDATED
           
-      - name: 🤖 Create Legendary Commit
+      - name: Commit changes
         run: |
           git config --local user.email "shayanzare2222@gmail.com"
-          git config --local user.name "Shayan Zare 🚀"
-
+          git config --local user.name "shayanzare-dev"
           git add -A
-
-          messages=(
-            "🚀 chore(bot): leveling up GitHub stats"
-            "🔥 chore(bot): keeping the graph green"
-            "🟢 chore(bot): commit energy boosted"
-            "⚡ chore(bot): power mode activated"
-            "🌍 chore(bot): building the future"
-            "💎 chore(bot): premium auto update"
-            "👑 chore(bot): king of contributions"
-            "🌿 chore(bot): growing daily commits"
-            "🧠 chore(bot): smart automation running"
-            "🎯 chore(bot): mission green accomplished"
-            "🚀✨ chore(bot): super commit deployed"
-            "🟩 chore(bot): making GitHub beautiful"
-          )
-
-          rand=$((RANDOM % ${#messages[@]}))
-          git commit -m "${messages[$rand]}" || echo "No changes to commit"
-
-      - name: 🚀 Push to GitHub
+          
+          arr[0]="chore(bot): 😂 auto commit"
+          arr[1]="chore(bot): 😱 auto commit"
+          arr[2]="chore(bot): 👿 auto commit"
+          arr[3]="chore(bot): 💩 auto commit"
+          arr[4]="chore(bot): 🙏 auto commit"
+          arr[5]="chore(bot): 🙈 auto commit"
+          arr[6]="chore(bot): 🐐 auto commit"
+          arr[7]="chore(bot): 🤖 auto commit"
+          arr[8]="chore(bot): 🟩 auto commit"
+          arr[9]="chore(bot): 👻 auto commit"
+          
+          rand=$[$RANDOM % ${#arr[@]}]
+          
+          git commit -m "${arr[$rand]}"
+          
+      - name: GitHub Push
         uses: ad-m/github-push-action@v0.6.0
         with:
           directory: "."
           github_token: ${{ secrets.TOKEN }}
+
+# name: 🚀 Auto Commit Pro
+
+# on:
+#   push:
+#     branches: [main]
+#   schedule:
+#     - cron: "*/30 * * * *"
+#   workflow_dispatch:
+
+# permissions:
+#   contents: write
+
+# jobs:
+#   auto_commit:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
+
+#       - name: 🕒 Update Timestamp
+#         run: |
+#           d=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+#           echo "Last update: $d 🚀" > LAST_UPDATED
+
+#       - name: 🤖 Create Legendary Commit
+#         run: |
+#           git config user.email "shayanzare2222@gmail.com"
+#           git config user.name "Shayan Zare 🚀"
+#           git add -A
+#           messages=(
+#             "🚀 chore(bot): leveling up GitHub stats"
+#             "🔥 chore(bot): keeping the graph green"
+#             "🟢 chore(bot): commit energy boosted"
+#             "⚡ chore(bot): power mode activated"
+#             "💎 chore(bot): premium auto update"
+#             "👑 chore(bot): king of contributions"
+#             "🎯 chore(bot): mission green accomplished"
+#           )
+#           rand=$((RANDOM % ${#messages[@]}))
+#           git commit -m "${messages[$rand]}" || echo "No changes to commit"
+
+#       - name: 🚀 Push changes
+#         run: |
+#           git push
